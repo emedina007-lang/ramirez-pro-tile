@@ -60,10 +60,14 @@ These demonstrate range: classic subway, natural stone/marble, bold pattern work
 
 "Contacts, social media" — placeholder only, no actual details given yet.
 
-## Open questions for client (asked 2026-09-10)
+## Decisions (2026-09-10)
 
-- Logo: existing file, or design a text wordmark from the company name?
+- **Logo:** real logo file exists but not sent yet — client will add it later. Use a typeset text wordmark as a placeholder for now, swap in the real file when it arrives.
+- **Pricing:** no listed prices — "Free Estimates" CTA drives to contact/quote request.
+- **Repo:** Edwin creates the empty GitHub repo and sends the URL; Claude pushes code to it (no gh/netlify CLI installed locally).
+
+## Still open
+
 - Contact info: phone, email, service area/city
 - Social media links/handles
-- Actual image files for the 8 gallery photos (currently only visible inline in chat)
-- Confirm "Free Estimates" CTA approach for the pricing section
+- Actual image files for the 8 gallery photos (currently only visible inline in chat, not yet saved to disk)
