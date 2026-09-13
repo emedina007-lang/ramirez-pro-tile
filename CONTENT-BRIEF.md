@@ -52,22 +52,29 @@ Not provided — client left this blank. Default assumption: lead with "Free Est
 5. Gray stone-look tile with black trim/fixtures, hex marble floor
 6. Black-and-white checkerboard marble tile, arched entry
 7. Green ceramic subway tile (in progress)
-8. Gray marble-look large-format tile, black hardware, matching bathroom floor
+(Correction: there are 7 photos total, not 8 — item 8 above was a miscount in the original list and does not correspond to a distinct additional image.)
 
 These demonstrate range: classic subway, natural stone/marble, bold pattern work (checkerboard), and color. Strong evidence this contractor can do both clean/classic and statement/custom work — worth leaning on in the gallery and "Custom Tile Designs" service section.
 
 ## Final section
 
-"Contacts, social media" — placeholder only, no actual details given yet.
+"Contacts, social media" — resolved 2026-09-13, see below.
 
 ## Decisions (2026-09-10)
 
-- **Logo:** real logo file exists but not sent yet — client will add it later. Use a typeset text wordmark as a placeholder for now, swap in the real file when it arrives.
 - **Pricing:** no listed prices — "Free Estimates" CTA drives to contact/quote request.
 - **Repo:** Edwin creates the empty GitHub repo and sends the URL; Claude pushes code to it (no gh/netlify CLI installed locally).
 
+## Decisions (2026-09-13) — client feedback round 1
+
+- **Logo:** real file received (`images/originals/logo-full-source.jpg`, a gold-chrome "RP" badge + "RAMIREZ PRO TILE LLC" wordmark on black). Cropped just the circular RP badge to `images/logo-icon.png` for the header/footer icon, paired with live text "Ramirez Pro Tile LLC" beside it (client wanted the name kept in writing, not just the image).
+- **Contact info:** phone `(828) 242-1537` (tel:+18282421537), email `ramirezprotilellc@gmail.com`, Instagram `https://www.instagram.com/ramirez_protile?stkn=MWJ2bzl0d2FianN2NQ==`. Wired into the hero/services/contact CTA buttons, the contact card, and the social row. No Facebook link was provided, so the Facebook placeholder icon was removed rather than left as a dead link.
+- **Color scheme overhaul:** full black-and-gold rework, replacing the original warm-stone/terracotta palette.
+  - Background: near-black `#0a0a0a` (client chose this over pure `#000000` for readability on large sections).
+  - Titles/headings: gold `#e0b23c`, sampled directly from the logo file's flat gold tone.
+  - Subtext/body copy: stayed grey, retuned to a lighter warm grey (`#a39a8c`) for contrast against the new black background.
+  - Buttons: cream/ivory outline (ghost style) with gold text, replacing the old solid terracotta-orange fill (client's pick over a solid-gold or bronze/copper alternative Claude also offered).
+
 ## Still open
 
-- Contact info: phone, email, service area/city
-- Social media links/handles
-- Actual image files for the 8 gallery photos (currently only visible inline in chat, not yet saved to disk)
+- Service area / city (not yet provided)
