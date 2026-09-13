@@ -77,4 +77,4 @@ These demonstrate range: classic subway, natural stone/marble, bold pattern work
 
 ## Still open
 
-- Service area / city (not yet provided)
+Nothing outstanding — service area (Asheville, WNC) added 2026-09-13.
