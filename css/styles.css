@@ -164,6 +164,27 @@ section { position: relative; }
   margin-top: 2px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  transition: color 160ms var(--ease-out);
+}
+
+.header-phone svg { color: var(--accent); flex-shrink: 0; }
+
+.header-phone:hover { color: var(--accent); }
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -585,6 +606,8 @@ section { position: relative; }
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
+  .header-right { gap: 16px; }
+  .header-phone-text { display: none; }
 
   .hero .wrap { grid-template-columns: 1fr; }
   .hero-visual { aspect-ratio: 16 / 10; border-radius: var(--radius-lg); order: -1; }

@@ -75,6 +75,22 @@ These demonstrate range: classic subway, natural stone/marble, bold pattern work
   - Subtext/body copy: stayed grey, retuned to a lighter warm grey (`#a39a8c`) for contrast against the new black background.
   - Buttons: cream/ivory outline (ghost style) with gold text, replacing the old solid terracotta-orange fill (client's pick over a solid-gold or bronze/copper alternative Claude also offered).
 
+## Gallery lightbox (2026-09-16)
+
+Added click/tap-to-open lightbox for all 7 gallery photos, showing the full uncropped image (thumbnails stay cropped for the bento grid). True pinch-to-zoom (mobile) and scroll-wheel zoom (desktop) anchored wherever the user points, not just centered — first version used a click-to-toggle-to-native-res zoom that only showed the center of the photo and felt broken; replaced with continuous transform-based zoom per client feedback. Double-tap/double-click as a quick shortcut. Also fixed the lightbox not covering the full viewport on mobile (iOS Safari dynamic toolbar / 100vh issue), which let the gallery grid peek through at the bottom.
+
+## SEO/meta pass (2026-09-16)
+
+Added, all using the client's real logo/contact info:
+- Favicon (`images/favicon-32.png`, `favicon.png`) and Apple touch icon (`images/apple-touch-icon.png`), generated from the cropped logo.
+- Open Graph + Twitter card meta tags, with a custom-composed `images/og-image.jpg` (logo + name + tagline on the site's black/gold background) so shared links show a proper preview instead of nothing.
+- `robots.txt` and `sitemap.xml` at the repo root.
+- `HomeAndConstructionBusiness` JSON-LD structured data (name, phone, email, areaServed, Instagram) for search engines.
+- Header now shows a click-to-call phone number/icon at all times (previously only reachable by scrolling to the contact section).
+- **Skipped on purpose:** a "Licensed & Insured" trust badge — client confirmed the business is not licensed, so this should not be added unless that changes.
+
+**Note:** `og:url`, `og:image`, `twitter:image`, `robots.txt`'s Sitemap line, and `sitemap.xml`'s `<loc>` are all hardcoded to `https://ramirez-pro-tile.netlify.app/`. **These need updating once a custom domain goes live** (see the domain/production conversation) — search for that URL across `index.html`, `robots.txt`, and `sitemap.xml` when that happens.
+
 ## Still open
 
-Nothing outstanding — service area (Asheville, WNC) added 2026-09-13.
+Nothing outstanding content-wise. Only follow-up: update hardcoded Netlify URLs (see note above) once a custom domain is attached.
