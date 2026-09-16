@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ramirez-pro-tile.netlify.app/sitemap.xml
+Sitemap: https://ramirezprotilellc.com/sitemap.xml

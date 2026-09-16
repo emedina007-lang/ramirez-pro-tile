@@ -89,8 +89,8 @@ Added, all using the client's real logo/contact info:
 - Header now shows a click-to-call phone number/icon at all times (previously only reachable by scrolling to the contact section).
 - **Skipped on purpose:** a "Licensed & Insured" trust badge — client confirmed the business is not licensed, so this should not be added unless that changes.
 
-**Note:** `og:url`, `og:image`, `twitter:image`, `robots.txt`'s Sitemap line, and `sitemap.xml`'s `<loc>` are all hardcoded to `https://ramirez-pro-tile.netlify.app/`. **These need updating once a custom domain goes live** (see the domain/production conversation) — search for that URL across `index.html`, `robots.txt`, and `sitemap.xml` when that happens.
+**Note (resolved 2026-09-16):** the above URLs were hardcoded to `https://ramirez-pro-tile.netlify.app/`. Client purchased `ramirezprotilellc.com` directly through Netlify (apex domain primary, `www.` redirects to it) — all hardcoded URLs (`og:url`, `og:image`, `twitter:image`, canonical link, JSON-LD `url`/`image`, `robots.txt` Sitemap line, `sitemap.xml` `<loc>`) updated to `https://ramirezprotilellc.com/`. DNS was propagating at time of update; no code-side action needed for that part, Netlify handles it automatically since the domain was bought through them.
 
 ## Still open
 
-Nothing outstanding content-wise. Only follow-up: update hardcoded Netlify URLs (see note above) once a custom domain is attached.
+Nothing outstanding.
