@@ -59,24 +59,57 @@
     });
 
     let currentIndex = 0;
-    let isZoomed = false;
     let lastFocused = null;
 
-    function setZoomed(next) {
-      isZoomed = next;
-      img.classList.toggle('is-zoomed', isZoomed);
-      stage.classList.toggle('is-zoomed', isZoomed);
-      if (isZoomed) {
-        requestAnimationFrame(() => {
-          stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
-          stage.scrollTop = (stage.scrollHeight - stage.clientHeight) / 2;
-        });
-      }
+    const MAX_SCALE = 4;
+    let scale = 1;
+    let panX = 0;
+    let panY = 0;
+
+    function applyTransform() {
+      img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      img.classList.toggle('is-zoomed', scale > 1.02);
+    }
+
+    // Clamp pan so the scaled image can't drift entirely off-stage.
+    function clampPan() {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const fit = Math.min(stage.clientWidth / img.naturalWidth, stage.clientHeight / img.naturalHeight);
+      const baseW = img.naturalWidth * fit;
+      const baseH = img.naturalHeight * fit;
+      const overflowX = Math.max(0, (baseW * scale - stage.clientWidth) / 2);
+      const overflowY = Math.max(0, (baseH * scale - stage.clientHeight) / 2);
+      panX = Math.max(-overflowX, Math.min(overflowX, panX));
+      panY = Math.max(-overflowY, Math.min(overflowY, panY));
+    }
+
+    function resetZoom() {
+      scale = 1;
+      panX = 0;
+      panY = 0;
+      applyTransform();
+      pointers.clear();
+      pinchStartDist = 0;
+    }
+
+    // Zoom to newScale, keeping the point under (clientX, clientY) visually fixed.
+    function zoomAt(clientX, clientY, newScaleRaw) {
+      const newScale = Math.max(1, Math.min(MAX_SCALE, newScaleRaw));
+      if (newScale === scale) return;
+      const rect = stage.getBoundingClientRect();
+      const qx = clientX - rect.left - rect.width / 2;
+      const qy = clientY - rect.top - rect.height / 2;
+      const k = newScale / scale;
+      panX = qx * (1 - k) + k * panX;
+      panY = qy * (1 - k) + k * panY;
+      scale = newScale;
+      clampPan();
+      applyTransform();
     }
 
     function render() {
       const photo = photos[currentIndex];
-      setZoomed(false);
+      resetZoom();
       img.src = photo.src;
       img.alt = photo.alt;
       tagEl.textContent = photo.tag;
@@ -89,15 +122,15 @@
       render();
       lightbox.hidden = false;
       lightbox.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('lightbox-open');
       closeBtn.focus();
     }
 
     function close() {
       lightbox.classList.remove('is-open');
       lightbox.hidden = true;
-      document.body.style.overflow = '';
-      setZoomed(false);
+      document.body.classList.remove('lightbox-open');
+      resetZoom();
       if (lastFocused) lastFocused.focus();
     }
 
@@ -136,46 +169,113 @@
       if (e.key === 'ArrowLeft') prev();
     });
 
-    // Click-to-toggle zoom with drag-to-pan when zoomed
-    let dragging = false;
-    let moved = false;
-    let startX = 0;
-    let startY = 0;
-    let startScrollLeft = 0;
-    let startScrollTop = 0;
+    // ─── Pinch (touch), wheel (desktop), drag-to-pan, and double-tap/click zoom ───
+    const pointers = new Map();
+    let pinchStartDist = 0;
+    let pinchStartScale = 1;
+    let panPointerStartX = 0;
+    let panPointerStartY = 0;
+    let panStartX = 0;
+    let panStartY = 0;
+
+    function dist(a, b) {
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    }
+
+    function midpoint(a, b) {
+      return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    }
+
+    function quickZoomToggle(clientX, clientY) {
+      if (scale > 1.02) {
+        resetZoom();
+      } else {
+        zoomAt(clientX, clientY, 2.5);
+      }
+    }
 
     img.addEventListener('pointerdown', (e) => {
-      dragging = true;
-      moved = false;
-      startX = e.clientX;
-      startY = e.clientY;
-      startScrollLeft = stage.scrollLeft;
-      startScrollTop = stage.scrollTop;
-      img.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      try {
+        img.setPointerCapture(e.pointerId);
+      } catch (err) {
+        // Ignore: pointer capture is a robustness nicety, not required for the gesture math below.
+      }
+
+      if (pointers.size === 2) {
+        const [a, b] = Array.from(pointers.values());
+        pinchStartDist = dist(a, b);
+        pinchStartScale = scale;
+      } else if (pointers.size === 1) {
+        panPointerStartX = e.clientX;
+        panPointerStartY = e.clientY;
+        panStartX = panX;
+        panStartY = panY;
+      }
     });
 
     img.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      if (Math.abs(dx) + Math.abs(dy) > 6) {
-        moved = true;
-        if (isZoomed) {
-          img.classList.add('is-dragging');
+      if (!pointers.has(e.pointerId)) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pointers.size === 2) {
+        e.preventDefault();
+        const [a, b] = Array.from(pointers.values());
+        const d = dist(a, b);
+        const mid = midpoint(a, b);
+        if (pinchStartDist > 0) {
+          zoomAt(mid.x, mid.y, pinchStartScale * (d / pinchStartDist));
+        }
+      } else if (pointers.size === 1 && scale > 1.02) {
+        const dx = e.clientX - panPointerStartX;
+        const dy = e.clientY - panPointerStartY;
+        if (Math.abs(dx) + Math.abs(dy) > 4) {
           e.preventDefault();
-          stage.scrollLeft = startScrollLeft - dx;
-          stage.scrollTop = startScrollTop - dy;
+          img.classList.add('is-dragging');
+          panX = panStartX + dx;
+          panY = panStartY + dy;
+          clampPan();
+          applyTransform();
         }
       }
     });
 
-    function endDrag() {
-      dragging = false;
+    function endPointer(e) {
+      if (!pointers.has(e.pointerId)) return;
+      pointers.delete(e.pointerId);
       img.classList.remove('is-dragging');
-      if (!moved) setZoomed(!isZoomed);
+
+      if (pointers.size === 1) {
+        // Seamlessly continue panning with the remaining finger.
+        const remaining = Array.from(pointers.entries())[0];
+        panPointerStartX = remaining[1].x;
+        panPointerStartY = remaining[1].y;
+        panStartX = panX;
+        panStartY = panY;
+      }
     }
 
-    img.addEventListener('pointerup', endDrag);
-    img.addEventListener('pointercancel', endDrag);
+    img.addEventListener('pointerup', endPointer);
+    img.addEventListener('pointercancel', endPointer);
+
+    // Desktop: mouse wheel / trackpad zooms, anchored at the cursor.
+    stage.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        const factor = Math.pow(1.0015, -e.deltaY);
+        zoomAt(e.clientX, e.clientY, scale * factor);
+      },
+      { passive: false }
+    );
+
+    // Double-click (desktop) / double-tap (touch, synthesized by the browser
+    // from two quick taps) both fire this native event — single source of
+    // truth for the zoom shortcut, avoiding double-handling with the pointer
+    // gesture logic above.
+    img.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      quickZoomToggle(e.clientX, e.clientY);
+    });
   }
 })();

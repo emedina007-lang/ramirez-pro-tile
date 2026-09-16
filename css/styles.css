@@ -639,9 +639,16 @@ section { position: relative; }
 }
 
 /* ─── Lightbox ─── */
+body.lightbox-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 .lightbox {
   position: fixed;
   inset: 0;
+  height: 100vh;
+  height: 100dvh;
   z-index: 100;
   background: rgba(5, 4, 3, 0.98);
   backdrop-filter: blur(4px);
@@ -649,6 +656,7 @@ section { position: relative; }
   align-items: center;
   justify-content: center;
   padding: 64px 20px 88px;
+  overscroll-behavior: contain;
 }
 
 .lightbox[hidden] { display: none; }
@@ -662,9 +670,8 @@ section { position: relative; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  touch-action: none;
 }
-
-.lightbox-stage.is-zoomed { overflow: auto; }
 
 .lightbox-img {
   max-width: 100%;
@@ -675,13 +682,11 @@ section { position: relative; }
   border-radius: var(--radius-sm);
   cursor: zoom-in;
   touch-action: none;
+  transform-origin: center center;
+  will-change: transform;
 }
 
-.lightbox-img.is-zoomed {
-  max-width: none;
-  max-height: none;
-  cursor: grab;
-}
+.lightbox-img.is-zoomed { cursor: grab; }
 
 .lightbox-img.is-dragging { cursor: grabbing; }
 
