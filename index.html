@@ -135,31 +135,31 @@
         <p>A look at recent installations, from clean classic subway tile to custom stone and pattern work.</p>
       </div>
       <div class="gallery-grid" data-reveal>
-        <div class="gallery-item span-2x2">
+        <div class="gallery-item span-2x2" role="button" tabindex="0" aria-label="Open photo: Checkerboard marble, 1 of 7">
           <img src="images/06-checkerboard-marble-arch.jpg" alt="Black and white checkerboard marble tile shower with arched entry" loading="lazy">
           <span class="tag">Checkerboard marble</span>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item" role="button" tabindex="0" aria-label="Open photo: Classic subway, 2 of 7">
           <img src="images/01-white-subway-penny-floor.jpg" alt="White subway tile shower with penny round tile floor" loading="lazy">
           <span class="tag">Classic subway</span>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item" role="button" tabindex="0" aria-label="Open photo: Ceramic subway, 3 of 7">
           <img src="images/07-green-subway-tile.jpg" alt="Green ceramic subway tile shower in progress" loading="lazy">
           <span class="tag">Ceramic subway</span>
         </div>
-        <div class="gallery-item span-1x2">
+        <div class="gallery-item span-1x2" role="button" tabindex="0" aria-label="Open photo: Calacatta marble, 4 of 7">
           <img src="images/04-calacatta-gold-marble-arch.jpg" alt="Calacatta gold marble slab tile shower with arched ceiling" loading="lazy">
           <span class="tag">Calacatta marble</span>
         </div>
-        <div class="gallery-item span-2x1">
+        <div class="gallery-item span-2x1" role="button" tabindex="0" aria-label="Open photo: Custom pattern work, 5 of 7">
           <img src="images/03-patterned-cement-window-bench.jpg" alt="Patterned cement look tile with wood trimmed niches and bench" loading="lazy">
           <span class="tag">Custom pattern work</span>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item" role="button" tabindex="0" aria-label="Open photo: Textured stone, 6 of 7">
           <img src="images/02-textured-stone-hex-floor.jpg" alt="Textured stone look tile shower with hexagon marble floor" loading="lazy">
           <span class="tag">Textured stone</span>
         </div>
-        <div class="gallery-item">
+        <div class="gallery-item" role="button" tabindex="0" aria-label="Open photo: Gray marble, 7 of 7">
           <img src="images/05-gray-marble-black-hardware.jpg" alt="Gray marble look tile shower with black hardware and hexagon floor" loading="lazy">
           <span class="tag">Gray marble</span>
         </div>
@@ -241,6 +241,19 @@
     <span>&copy; 2026 Ramirez Pro Tile LLC. All rights reserved.</span>
   </div>
 </footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">&larr;</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">&rarr;</button>
+  <div class="lightbox-stage" id="lightboxStage">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  </div>
+  <div class="lightbox-meta">
+    <span class="lightbox-tag" id="lightboxTag"></span>
+    <span class="lightbox-count" id="lightboxCount"></span>
+  </div>
+</div>
 
 <script src="js/main.js"></script>
 </body>
